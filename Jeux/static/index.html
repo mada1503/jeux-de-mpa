@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu des Jeux</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .game-container, .menu-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 800px;
+            max-width: 90%;
+        }
+        .title {
+            font-size: 3em;
+            color: #333;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .button, .menu-button {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 10px;
+            font-size: 1.2em;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .tetris-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        }
+        .subway-button {
+            background: linear-gradient(45deg, #45b7d1, #5ecfcc);
+        }
+        .quit-button {
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+        }
+        .scores {
+            margin: 20px 0;
+            color: #333;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-container">
+        <h1 class="title">Menu des Jeux</h1>
+        <div id="scores" class="scores"></div>
+        <button onclick="window.open('tetris.html', '_blank')" class="button tetris-button">Jouer à Tetris</button>
+        <button onclick="window.open('subway.html', '_blank')" class="button subway-button">Jouer à Subway Surfers</button>
+        <button onclick="window.close()" class="button quit-button">Fermer</button>
+    </div>
+
+    <script>
+        async function loadScores() {
+            try {
+                const response = await fetch('/scores');
+                const scores = await response.json();
+                const scoresDiv = document.getElementById('scores');
+                if (scores.tetris || scores.subway) {
+                    scoresDiv.innerHTML = `
+                        <p>Score Tetris: ${scores.tetris || 0}</p>
+                        <p>Score Subway Surfers: ${scores.subway || 0}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Erreur lors du chargement des scores:', error);
+            }
+        }
+
+        // Charger les scores au chargement de la page
+        loadScores();
+    </script>
+</body>
+</html>
